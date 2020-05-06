@@ -1,11 +1,19 @@
 package main
 
 import (
-	_ "myapp/dbs"
-	"myapp/router"
+	"myapp/application"
 )
 
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server Petstore server.
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @host localhost:9000
+// @BasePath /
 func main() {
-	apiRouter := router.Router()
-	apiRouter.Run(":9000")
+	application.Run()
 }
