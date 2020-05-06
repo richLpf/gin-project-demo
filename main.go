@@ -1,6 +1,9 @@
 package main
 
-import "myapp/router"
+import (
+	_ "myapp/dbs"
+	"myapp/router"
+)
 
 func main() {
 	apiRouter := router.Router()
