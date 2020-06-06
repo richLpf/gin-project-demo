@@ -8,7 +8,7 @@ import (
 )
 
 //PublicGet get请求
-func PublicGet(url string, key string, value string) (str string, err error) {
+func PublicGet(url string, key string, value string) (content interface{}, err error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	q := req.URL.Query()
 	if key != "" && value != "" {
@@ -25,8 +25,7 @@ func PublicGet(url string, key string, value string) (str string, err error) {
 	if err != nil {
 		return "", err
 	}
-	str = string(body)
-	return str, err
+	err = json.Unmarshal([]byte(string(body)), &content)
 }
 
 // PublicPost post请求

@@ -1,8 +1,10 @@
 # 企业微信开发整理
 
-服务端API `https://work.weixin.qq.com/api/doc/90000/90135/90664`
+[服务端API](https://work.weixin.qq.com/api/doc/90000/90135/90664)
 
-详细代码见 `wechat.go`
+[详细代码github](https://github.com/richLpf/gin-project-demo/tree/master/services/wechat)
+
+![原理图](http://weblpf.cn-bj.ufileos.com/ufile-log%2Fweblpf%2F%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91.png)
 
 > 企业微信开发分为服务端API和客户端API
 
@@ -12,7 +14,7 @@
 
 1、企业微信开发，一般对应的是创建相关应用（这里创建应用取名：优效）
 
-2、![微信的后台获取的参数](https://work.weixin.qq.com/api/doc/90000/90135/90665)
+2、[微信的后台获取的参数](https://work.weixin.qq.com/api/doc/90000/90135/90665)
 
 ```
 corpid
@@ -202,7 +204,7 @@ chatid|	否|	群聊的唯一标志，不能与已有的群重复；字符串类�
 ```
 https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=ACCESS_TOKEN
 
-//对应的请求参数，不通类型不通可以通过企业微信查看(https://work.weixin.qq.com/api/doc/90000/90135/90248)
+//对应的请求参数，不通类型不通可以通过[企业微信查看](https://work.weixin.qq.com/api/doc/90000/90135/90248)
 
 {
     "chatid": "CHATID",
