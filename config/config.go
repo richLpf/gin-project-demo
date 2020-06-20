@@ -19,6 +19,26 @@ type Mysql struct {
 	Database string
 }
 
+//Uxiaowechat  企业微信相关参数
+type Uxiaowechat struct {
+	CorpID         string //企业微信id
+	Corpsecret     string //应用的密钥
+	TokenURL       string //获取token
+	AgentID        string // 应用id
+	CreateChatURL  string //创建群聊
+	SendInfoURL    string //发送企业微信群聊
+	SendMemberURL  string //推送个人信息
+	QYChatInfo     string //获取企业微信登录授权信息
+	QYChatUserInfo string //获取企业微信成员信息
+}
+
+//IniInfo 获取配置
+type IniInfo struct {
+	App         App
+	Mysql       Mysql
+	Uxiaowechat Uxiaowechat
+}
+
 //IniParser struct
 type IniParser struct {
 	confReader *ini.File
@@ -53,3 +73,12 @@ func (s *IniParser) GetString(section string, key string) string {
 	}
 	return r.Key(key).String()
 }
+
+//SetIniInfo 读取配置缓存
+//func (conf *IniInfo) getIniInfo() *IniInfo {
+//mode :=
+//conf.App = app
+//conf.Mysql = mysql
+//conf.Uxiaowechat = wechat
+//return conf
+//}

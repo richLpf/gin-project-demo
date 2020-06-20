@@ -26,6 +26,7 @@ func PublicGet(url string, key string, value string) (content interface{}, err e
 		return "", err
 	}
 	err = json.Unmarshal([]byte(string(body)), &content)
+	return content, err
 }
 
 // PublicPost post请求

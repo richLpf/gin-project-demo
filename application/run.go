@@ -6,11 +6,18 @@ import (
 	"myapp/config"
 	"myapp/dbs"
 	apiRouter "myapp/router"
+	_ "myapp/services/demo"
+	"myapp/services/wechat"
 	"os"
+	"reflect"
+
+	"github.com/richLpf/goutils/utils"
+	uuid "github.com/satori/go.uuid"
 )
 
 //Run 启动app
 func Run() {
+	utils.PrintStr()
 	mode := flag.String("mode", "dev", "eventment")
 	flag.Parse()
 	mysql, err := getMysql(*mode)
@@ -23,6 +30,16 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
+	Uxiaowechat, err := getQyChartInfo(*mode)
+	if err != nil {
+		panic(err)
+	}
+	wechat.GetQyInfo(Uxiaowechat)
+	fmt.Println("Uxiaowechat", Uxiaowechat)
+	u1 := uuid.NewV4()
+	fmt.Printf("UUIDv4: %s\n", u1)
+	fmt.Println("uuid type", reflect.TypeOf(u1))
+
 	router := apiRouter.Router(app)
 	router.Run(app.Port)
 }
@@ -64,4 +81,23 @@ func getMysql(mode string) (mysql config.Mysql, err error) {
 		Database: iniParser.GetString("mysql", "database"),
 	}
 	return mysql, err
+}
+
+func getQyChartInfo(mode string) (wechat config.Uxiaowechat, err error) {
+	iniParser, err := readIni(mode)
+	if err != nil {
+		return wechat, err
+	}
+	wechat = config.Uxiaowechat{
+		CorpID:         iniParser.GetString("Uxiaowechat", "CorpID"),
+		Corpsecret:     iniParser.GetString("Uxiaowechat", "Corpsecret"),
+		TokenURL:       iniParser.GetString("Uxiaowechat", "TokenURL"),
+		AgentID:        iniParser.GetString("Uxiaowechat", "AgentID"),
+		CreateChatURL:  iniParser.GetString("Uxiaowechat", "CreateChatURL"),
+		SendInfoURL:    iniParser.GetString("Uxiaowechat", "SendInfoURL"),
+		SendMemberURL:  iniParser.GetString("Uxiaowechat", "SendInfoURL"),
+		QYChatInfo:     iniParser.GetString("Uxiaowechat", "QYChatInfo"),
+		QYChatUserInfo: iniParser.GetString("Uxiaowechat", "QYChatUserInfo"),
+	}
+	return wechat, err
 }

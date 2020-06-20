@@ -3,6 +3,7 @@ package wechat
 import (
 	"fmt"
 	"myapp/common"
+	"myapp/config"
 )
 
 // 获取并缓存access_token
@@ -16,14 +17,20 @@ var (
 	GLOEXPIRESIN      string
 )
 
-//GetAccessToken 获取token
-func GetAccessToken() (err error) {
+//GetQyInfo 获取企业微信参数
+func GetQyInfo(wechatInfo config.Uxiaowechat) {
+	fmt.Println("wechatInfo", wechatInfo)
+}
+
+//GenerageAccessToken 获取token
+func GenerageAccessToken(URL, corpid, corpsecret string) (err error) {
 	reqURL := URL + "?corpid=" + corpid + "&corpsecret=" + corpsecret
 	res, err := common.PublicGet(reqURL, "", "")
 	if err != nil {
 		return err
 	}
 	fmt.Println("res", res)
+	return err
 }
 
 //SetExpiresIn 设置有效期
@@ -31,6 +38,10 @@ func SetExpiresIn() {
 
 }
 
-//Test test string
-func Test() {
+//GetAccessToken 获取token
+func GetAccessToken() {
+	//获取最新的token
+	if GLOBALACCESSTOKEN == "" {
+		fmt.Println("没有缓存token")
+	}
 }
