@@ -27,7 +27,12 @@ func RunMysql(mysql config.Mysql) {
 	}
 	fmt.Println("DB", DB)
 	DB.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8").AutoMigrate(
-		&model.User{},
+		&model.Users{},
+		&model.Roles{},
+		&model.Resources{},
+		&model.UserRoles{},
+		&model.Namespaces{},
+		&model.RoleResources{},
 	)
 	DB.DB().Ping()
 }

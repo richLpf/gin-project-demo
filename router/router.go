@@ -2,9 +2,13 @@ package router
 
 import (
 	"myapp/config"
+	"myapp/controller/namespace"
 	"myapp/controller/passage"
+	"myapp/controller/resource"
+	"myapp/controller/role"
 	"myapp/controller/user"
 	"myapp/controller/wechat"
+
 	"myapp/middleware"
 
 	//docs
@@ -43,5 +47,35 @@ func Router(app config.App) *gin.Engine {
 	wechatRouter := router.Group("/wechat")
 	wechatRouter.GET("/session", wechat.GetAccession)
 
+	//acl
+	aclRouter := router.Group("/acl")
+	//users
+	aclRouter.POST("/user/add", user.AddUser)
+	aclRouter.POST("/user/delete/:id", user.DelUser)
+	aclRouter.POST("/user/update", user.UpdateUser)
+	aclRouter.GET("/user/detail/:id", user.GetDetail)
+	aclRouter.GET("/user/list", user.GetUserList)
+	aclRouter.POST("/user/addrole", user.AddRole)
+	aclRouter.GET("/user/permission", user.GetUserPermission)
+	//role
+	aclRouter.POST("/role/add", role.AddRole)
+	aclRouter.POST("/role/delete", role.DelRole)
+	aclRouter.POST("/role/update", role.UpdateRole)
+	aclRouter.GET("/role/detail/:id", role.GetRole)
+	aclRouter.GET("/role/list", role.GetRoleList)
+	aclRouter.POST("/role/permission", role.RelateResource)
+	aclRouter.GET("/role/permission/:id", role.GetRelateResource)
+	//resource
+	aclRouter.POST("/resource/add", resource.AddResource)
+	aclRouter.POST("/resource/delete", resource.DelResource)
+	aclRouter.POST("/resource/update", resource.UpdateResource)
+	//aclRouter.GET("/resource/detail/:id", resource.GetResource)
+	aclRouter.GET("/resource/list", resource.GetResourceList)
+	//namespace
+	aclRouter.POST("/namespace/add", namespace.AddNamespace)
+	aclRouter.POST("/namespace/delete", namespace.DelNamespace)
+	aclRouter.POST("/namespace/update", namespace.UpdateNamespace)
+	//aclRouter.GET("/namespace/detail/:id", namespace.GetNamespace)
+	aclRouter.GET("/namespace/list", namespace.GetNamespaceList)
 	return router
 }

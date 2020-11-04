@@ -1,6 +1,8 @@
 package main
 
 import (
+	//"fmt"
+	//"strings"
 	"myapp/application"
 )
 
@@ -15,5 +17,8 @@ import (
 // @host localhost:9000
 // @BasePath /
 func main() {
+	//a := "2~23~45"
+	//b := strings.Replace(a, "~", ",", -1)
+	//fmt.Println("aaaa", a, b)
 	application.Run()
 }
