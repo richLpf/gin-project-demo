@@ -49,14 +49,17 @@ func Router(app config.App) *gin.Engine {
 
 	//acl
 	aclRouter := router.Group("/acl")
-	//users
+	//所有用户的users和权限没有关系
 	aclRouter.POST("/user/add", user.AddUser)
 	aclRouter.POST("/user/delete/:id", user.DelUser)
 	aclRouter.POST("/user/update", user.UpdateUser)
 	aclRouter.GET("/user/detail/:id", user.GetDetail)
 	aclRouter.GET("/user/list", user.GetUserList)
-	aclRouter.POST("/user/addrole", user.AddRole)
+	// 用户权限
+	//aclRouter.POST("/user/addrole", user.AddRole)
 	aclRouter.GET("/user/permission", user.GetUserPermission)
+	aclRouter.GET("/user/rolelist", user.GetUserRole)
+	aclRouter.POST("/user/role/add", user.AddUserRole)
 	//role
 	aclRouter.POST("/role/add", role.AddRole)
 	aclRouter.POST("/role/delete", role.DelRole)

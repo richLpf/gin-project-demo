@@ -60,7 +60,7 @@ func DelResource(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
-	if err := dbs.DB.Debug().Delete(&req).Error; err != nil {
+	if err := dbs.DB.Delete(&req).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}

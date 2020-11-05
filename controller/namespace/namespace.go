@@ -49,7 +49,7 @@ func DelNamespace(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
-	if err := dbs.DB.Debug().Model(&req).Where("is_deleted = 0").Update("is_deleted", 1).Error; err != nil {
+	if err := dbs.DB.Model(&req).Where("is_deleted = 0").Update("is_deleted", 1).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
