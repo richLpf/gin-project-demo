@@ -1,5 +1,26 @@
 basePath: /
 definitions:
+  model.Namespaces:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      describe:
+        type: string
+      id:
+        type: integer
+      is_deleted:
+        type: integer
+      name:
+        type: string
+      namespace:
+        type: string
+      parent:
+        type: string
+      updated_at:
+        type: string
+    type: object
   model.Passage:
     properties:
       content:
@@ -26,6 +47,43 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /acl/namespace/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加ACL项目
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Namespaces'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 添加ACL项目
+      tags:
+      - ACL
+  /acl/namespace/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取acl项目
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: acl项目
+      tags:
+      - ACL
   /passage/add:
     post:
       consumes:
@@ -47,7 +105,7 @@ paths:
             type: string
       summary: 添加文章
       tags:
-      - 类别
+      - 文章
   /ucloud/list:
     get:
       consumes:
@@ -71,5 +129,5 @@ paths:
             type: string
       summary: 列表实例
       tags:
-      - 类别
+      - 文章
 swagger: "2.0"

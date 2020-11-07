@@ -10,7 +10,7 @@ import (
 // List godoc
 // @Summary 列表实例
 // @Description 描述信息
-// @Tags 类别
+// @Tags 文章
 // @Accept json
 // @Produce json
 // @Param limit query string false  "20"
@@ -25,7 +25,7 @@ func GetPassageList(c *gin.Context) {
 // AddUser godoc
 // @Summary 添加文章
 // @Description 添加文章
-// @Tags 类别
+// @Tags 文章
 // @Accept json
 // @Produce json
 // @Param body body model.Passage true  "请求参数"

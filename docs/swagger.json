@@ -14,6 +14,63 @@
     "host": "localhost:9000",
     "basePath": "/",
     "paths": {
+        "/acl/namespace/add": {
+            "post": {
+                "description": "添加ACL项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ACL"
+                ],
+                "summary": "添加ACL项目",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Namespaces"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/acl/namespace/list": {
+            "get": {
+                "description": "获取acl项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ACL"
+                ],
+                "summary": "acl项目",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/passage/add": {
             "post": {
                 "description": "添加文章",
@@ -24,7 +81,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "类别"
+                    "文章"
                 ],
                 "summary": "添加文章",
                 "parameters": [
@@ -58,7 +115,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "类别"
+                    "文章"
                 ],
                 "summary": "列表实例",
                 "parameters": [
@@ -87,6 +144,38 @@
         }
     },
     "definitions": {
+        "model.Namespaces": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "describe": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_deleted": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Passage": {
             "type": "object",
             "properties": {
