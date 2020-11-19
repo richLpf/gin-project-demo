@@ -33,11 +33,17 @@ func GetDetail(c *gin.Context) {
 
 //UpdateUser
 func UpdateUser(c *gin.Context) {
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
 	var req model.Users
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": err.Error()})
 		return
 	}
+	req.CreatedBy = curUser
 	if err := dbs.DB.Save(&req).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": err.Error()})
 		return
@@ -47,11 +53,17 @@ func UpdateUser(c *gin.Context) {
 
 //AddUser
 func AddUser(c *gin.Context) {
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
 	var req model.Users
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": err.Error()})
 		return
 	}
+	req.CreatedBy = curUser
 	if err := dbs.DB.Create(&req).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": err.Error()})
 		return

@@ -8,8 +8,8 @@ import "time"
 //定义合理的字段类型
 type Roles struct {
 	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
 	Namespace string    `json:"namespace"`
-	Content   string    `json:"content"`
 	Role      string    `json:"role"`
 	Describe  string    `json:"describe"`
 	Operator  string    `json:"operator"`
@@ -37,7 +37,7 @@ type Resources struct {
 //RoleResources model
 type RoleResources struct {
 	ID         uint      `json:"id"`
-	Namespace  string    `json:"namespace'`
+	Namespace  string    `json:"namespace"`
 	RoleID     uint      `json:"role_id"`
 	ResourceID uint      `json:"resource_id"`
 	Describe   string    `json:"describe"`
@@ -53,7 +53,7 @@ type RolePermission struct {
 }
 
 type ReqRoleResources struct {
-	Namespace      string           `json:"namespace'`
+	Namespace      string           `json:"namespace"`
 	RoleID         uint             `json:"role_id"`
 	RolePermission []RolePermission `json:"role_permission"`
 	CreatedBy      string           `json:"created_by"`

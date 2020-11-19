@@ -18,12 +18,12 @@ func Cors() gin.HandlerFunc {
 		c.Header("Access-Control-Expose-Headers", "Accept , Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
 		c.Header("Access-Control-Allow-Credentials", "True")
 		c.Header("Content-Type", "application/json; charset=utf-8")
-		fmt.Println("method", method)
 		if method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			c.AbortWithStatus(http.StatusNoContent)
 		}
-		submitUser := c.Request.Header.Get("remoteUser")
+		submitUser := c.Request.Header.Get("remote_user")
+		fmt.Println("submitUser", submitUser)
 		c.Set("submitUser", submitUser)
 		c.Next()
 	}

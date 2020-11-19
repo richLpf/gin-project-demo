@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// 看下结构怎么关联
+// 获取角色，同时要获取角色关联的资源信息
 func GetRole(c *gin.Context) {
 	var info model.Roles
 	if err := dbs.DB.First(&info).Error; err != nil {
@@ -19,9 +19,10 @@ func GetRole(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"RetCode": 0, "Msg": "success", "Data": info})
 }
+
 func GetRoleList(c *gin.Context) {
 	var list []model.Roles
-	if err := dbs.DB.Order("created_at desc").Find(&list).Error; err != nil {
+	if err := dbs.DB.Where("is_deleted = 0").Order("created_at desc").Find(&list).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
@@ -45,16 +46,23 @@ func GetRoleList(c *gin.Context) {
 
 //ReqUserRoles
 type ReqUserRoles struct {
+	ID        uint `json:"id"` 
+	Name      string `json:"name"`
 	Namespace string `json:"namespace"`
 	Role      string `json:"role"`
 	Describe   string  `json:"describe"`
-	Permission []int  `json:"permission"`
+	Permission []uint  `json:"permission"`
 	Status    uint   `json:"status"`
 	CreatedBy string `json:"created_by"`
 }
 
 //AddRole 添加角色
 func AddRole(c *gin.Context) {
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
 	var req ReqUserRoles
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": err.Error()})
@@ -63,10 +71,11 @@ func AddRole(c *gin.Context) {
 	tx := dbs.DB.Begin()
 	// 首先插入role角色列表
 	roleReq := model.Roles{
+		Name: req.Name,
 		Namespace: req.Namespace,
 		Role: req.Role,
 		Describe: req.Describe,
-		CreatedBy: req.CreatedBy,
+		CreatedBy: curUser,
 	}
 	if err := tx.Save(&roleReq).Error; err != nil {
 		tx.Rollback()
@@ -81,7 +90,7 @@ func AddRole(c *gin.Context) {
 			RoleID: roleReq.ID,
 			ResourceID: uint(v),
 			Describe: req.Describe,
-			CreatedBy: req.CreatedBy,
+			CreatedBy: curUser,
 		}
 		if err := tx.Save(&info).Error; err != nil {
 			tx.Rollback()
@@ -95,15 +104,47 @@ func AddRole(c *gin.Context) {
 
 // 更新角色信息，同创建一致
 func UpdateRole(c *gin.Context) {
-	var req model.Roles
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
+	var req ReqUserRoles
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"RetCode": 2, "message": err.Error()})
 		return
 	}
-	if err := dbs.DB.Save(&req).Error; err != nil {
-		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
+	tx := dbs.DB.Begin()
+	roleReq := model.Roles{
+		ID: req.ID,
+		Name: req.Name,
+		Namespace: req.Namespace,
+		Role: req.Role,
+		Describe: req.Describe,
+		CreatedBy: curUser,
+	}
+	if err := tx.Save(&roleReq).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusOK, gin.H{"RetCode": 3, "message": err.Error()})
 		return
 	}
+	// 插入role_resources列表
+	for _, v := range req.Permission {
+		info := model.RoleResources{
+			Namespace: req.Namespace,
+			RoleID: req.ID,
+			ResourceID: uint(v),
+			Describe: req.Describe,
+			CreatedBy: curUser,
+		}
+		if err := tx.Save(&info).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusOK, gin.H{"RetCode": 4, "Message": err.Error()})
+			return
+		}
+	}
+	tx.Commit()
+
 	c.JSON(http.StatusOK, gin.H{"RetCode": 0, "Msg": "success"})
 }
 

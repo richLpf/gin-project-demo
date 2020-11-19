@@ -49,11 +49,17 @@ func GetResourceList(c *gin.Context) {
 // @Success 200 {string} string "ok"
 // @Router /acl/resource/add [POST]
 func AddResource(c *gin.Context) {
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
 	var req model.Resources
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
+	req.CreatedBy = curUser
 	if err := dbs.DB.Create(&req).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
@@ -71,11 +77,17 @@ func AddResource(c *gin.Context) {
 // @Success 200 {string} string "ok"
 // @Router /acl/resource/update [POST]
 func UpdateResource(c *gin.Context) {
+	curUser := c.MustGet("submitUser").(string)
+	if curUser == "" {
+		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "Message": "no user info"})
+		return
+	}
 	var req model.Resources
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
 	}
+	req.CreatedBy = curUser
 	if err := dbs.DB.Save(&req).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"RetCode": 1, "message": err.Error()})
 		return
